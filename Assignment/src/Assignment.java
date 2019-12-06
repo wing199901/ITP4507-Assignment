@@ -11,6 +11,9 @@
 public class Assignment {
 
     public static void main(String[] args) {
+        System.out.println("Coffee Inventory Management System");
+        System.out.println("Please enter command: [a | v | c | s | u | r | sl | x]\n"
+                + "a = add product, v = view products, c = collect product, s = ship product, u = undo, r = redo, sl = show list undo/redo, x = exit system");
 
     }
 }
@@ -27,29 +30,17 @@ abstract class CoffeeProduct {
         this.qty = qty;
     }
 
-    public String getName() {
-        return name;
-    }
+    public abstract String getName();
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public abstract void setName(String name);
 
-    public int getProductID() {
-        return productID;
-    }
+    public abstract int getProductID();
 
-    public void setProductID(int productID) {
-        this.productID = productID;
-    }
+    public abstract void setProductID(int productID);
 
-    public int getQty() {
-        return qty;
-    }
+    public abstract int getQty();
 
-    public void setQty(int qty) {
-        this.qty = qty;
-    }
+    public abstract void setQty(int qty);
 
     @Override
     public String toString() {
@@ -63,8 +54,8 @@ class CoffeeCandy extends CoffeeProduct {
     private int noOfCandy;
     private int caloriesPerCandy;
 
-    public CoffeeCandy(int noOfCandy, int caloriesPerCandy, String name, int productID, int qty) {
-        super(name, productID, qty);
+    public CoffeeCandy(int noOfCandy, int caloriesPerCandy, String name, int productID) {
+        super(name, productID, 0);
         this.noOfCandy = noOfCandy;
         this.caloriesPerCandy = caloriesPerCandy;
     }
@@ -87,7 +78,37 @@ class CoffeeCandy extends CoffeeProduct {
 
     @Override
     public String toString() {
-        return "CoffeeCandy{" + "noOfCandy=" + noOfCandy + ", caloriesPerCandy=" + caloriesPerCandy + '}';
+        return super.toString() + "CoffeeCandy{" + "noOfCandy=" + noOfCandy + ", caloriesPerCandy=" + caloriesPerCandy + '}';
+    }
+
+    @Override
+    public String getName() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setName(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getProductID() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setProductID(int productID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getQty() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setQty(int qty) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
@@ -96,8 +117,8 @@ class CoffeeProwder extends CoffeeProduct {
 
     private double weight;
 
-    public CoffeeProwder(double weight, String name, int productID, int qty) {
-        super(name, productID, qty);
+    public CoffeeProwder(double weight, String name, int productID) {
+        super(name, productID, 0);
         this.weight = weight;
     }
 
@@ -111,7 +132,37 @@ class CoffeeProwder extends CoffeeProduct {
 
     @Override
     public String toString() {
-        return "CoffeeProwder{" + "weight=" + weight + '}';
+        return super.toString() + "CoffeeProwder{" + "weight=" + weight + '}';
+    }
+
+    @Override
+    public String getName() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setName(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getProductID() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setProductID(int productID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getQty() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setQty(int qty) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
