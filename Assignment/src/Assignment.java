@@ -1,21 +1,90 @@
+
+import java.util.Scanner;
+import java.util.Stack;
+import java.util.Vector;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author 180042945
  */
 public class Assignment {
 
-    public static void main(String[] args) {
-        System.out.println("Coffee Inventory Management System");
-        System.out.println("Please enter command: [a | v | c | s | u | r | sl | x]\n"
-                + "a = add product, v = view products, c = collect product, s = ship product, u = undo, r = redo, sl = show list undo/redo, x = exit system");
+    public static Scanner sc = new Scanner(System.in);
 
+    public static void main(String[] args) {
+        Vector record = new Vector();
+        String command;
+        Caretaker caretaker = new Caretaker();
+        Stack commandRecord = new Stack();
+        Stack undoList = new Stack();
+
+        CommandFactory[] commands = new CommandFactory[8];
+        commands[0] = new ExitFactory();
+        commands[1] = new AddFactory();
+        commands[2] = new ViewFactory();
+        commands[3] = new CollectFactory();
+        commands[4] = new ShipFactory();
+        commands[5] = new UndoFactory();
+        commands[6] = new RedoFactory();
+        commands[7] = new ShowListFactory();
+
+        ProductFactory[] products = new ProductFactory[2];
+        products[0] = new CoffeeCandyFactory();
+        products[1] = new CoffeePowderFactory();
+
+        while (true) {
+            System.out.println("Coffee Inventory Management System");
+            System.out.println("Please enter command: [a | v | c | s | u | r | sl | x]\n"
+                    + "a = add product, v = view products, c = collect product, s = ship product,\n"
+                    + "u = undo, r = redo, sl = show list undo/redo, x = exit system\n");
+            command = sc.next();
+            Command com = createCommand(commands, command, record, products, caretaker, commandRecord, undoList);
+            com.execute();
+            System.out.println("");
+            if (command.equals("a") || command.equals("s") || command.equals("c")) {
+                commandRecord.push(com);
+            }
+        }
     }
+
+    public static Command createCommand(CommandFactory[] commands, String command, Vector record, ProductFactory[] products, Caretaker caretaker, Stack commandRecord, Stack undoList) {
+        Command com;
+        switch (command) {
+            case "x":
+                com = commands[0].CreateCommand(sc, products, record, caretaker, commandRecord, undoList);
+                break;
+            case "a":
+                com = commands[1].CreateCommand(sc, products, record, caretaker, commandRecord, undoList);
+                break;
+            case "v":
+                com = commands[2].CreateCommand(sc, products, record, caretaker, commandRecord, undoList);
+                break;
+            case "c":
+                com = commands[3].CreateCommand(sc, products, record, caretaker, commandRecord, undoList);
+                break;
+            case "s":
+                com = commands[4].CreateCommand(sc, products, record, caretaker, commandRecord, undoList);
+                break;
+            case "u":
+                com = commands[5].CreateCommand(sc, products, record, caretaker, commandRecord, undoList);
+                break;
+            case "r":
+                com = commands[6].CreateCommand(sc, products, record, caretaker, commandRecord, undoList);
+                break;
+            case "sl":
+                com = commands[7].CreateCommand(sc, products, record, caretaker, commandRecord, undoList);
+                break;
+            default:
+                com = null;
+        }
+        return com;
+    }
+
 }
 
 abstract class CoffeeProduct {
@@ -30,23 +99,38 @@ abstract class CoffeeProduct {
         this.qty = qty;
     }
 
-    public abstract String getName();
+    public String getName() {
+        return name;
+    }
 
-    public abstract void setName(String name);
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public abstract int getProductID();
+    public int getProductID() {
+        return productID;
+    }
 
-    public abstract void setProductID(int productID);
+    public void setProductID(int productID) {
+        this.productID = productID;
+    }
 
-    public abstract int getQty();
+    public int getQty() {
+        return qty;
+    }
 
-    public abstract void setQty(int qty);
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
 
     @Override
     public String toString() {
-        return "CoffeeProduct{" + "name=" + name + ", productID=" + productID + ", qty=" + qty + '}';
-    }
+        return "Product information\n"
+                + "ID: " + productID + "\n"
+                + "Name: " + name + "\n"
+                + "Quantity: " + qty + "\n";
 
+    }
 }
 
 class CoffeeCandy extends CoffeeProduct {
@@ -78,46 +162,17 @@ class CoffeeCandy extends CoffeeProduct {
 
     @Override
     public String toString() {
-        return super.toString() + "CoffeeCandy{" + "noOfCandy=" + noOfCandy + ", caloriesPerCandy=" + caloriesPerCandy + '}';
-    }
-
-    @Override
-    public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getProductID() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setProductID(int productID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getQty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setQty(int qty) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return super.toString() + "Number of candies per package: " + noOfCandy + "\n"
+                + "Calories Per candy: " + caloriesPerCandy + "\n";
     }
 
 }
 
-class CoffeeProwder extends CoffeeProduct {
+class CoffeePowder extends CoffeeProduct {
 
     private double weight;
 
-    public CoffeeProwder(double weight, String name, int productID) {
+    public CoffeePowder(double weight, String name, int productID) {
         super(name, productID, 0);
         this.weight = weight;
     }
@@ -132,37 +187,7 @@ class CoffeeProwder extends CoffeeProduct {
 
     @Override
     public String toString() {
-        return super.toString() + "CoffeeProwder{" + "weight=" + weight + '}';
-    }
-
-    @Override
-    public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getProductID() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setProductID(int productID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getQty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setQty(int qty) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return super.toString() + "weight: " + weight + "\n";
     }
 
 }
