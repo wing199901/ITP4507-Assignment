@@ -47,7 +47,13 @@ public class Assignment {
             com.execute();
             System.out.println("");
             if (command.equals("a") || command.equals("s") || command.equals("c")) {
-                commandRecord.push(com);
+                if (command.equals("s")) {
+                    if (Ship.class.cast(com).success) {
+                        commandRecord.push(com);
+                    }
+                } else {
+                    commandRecord.push(com);
+                }
             }
         }
     }

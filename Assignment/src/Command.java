@@ -112,7 +112,7 @@ class Collect implements Command {
     Vector<CoffeeProduct> record;
     Caretaker caretaker;
     CoffeeProduct product;
-
+    int qty;
     public Collect(Scanner sc, Vector record, Caretaker caretaker) {
         this.sc = sc;
         this.record = record;
@@ -128,7 +128,7 @@ class Collect implements Command {
             if (Integer.parseInt(code) == record.get(i).getProductID()) {
                 product = record.get(i);
                 System.out.println("Quantity to receive:");
-                int qty = sc.nextInt();
+                qty = sc.nextInt();
                 caretaker.saveMyClass(record.get(i));
                 record.get(i).setQty(record.get(i).getQty() + qty);
                 if (record.get(i) instanceof CoffeeCandy) {
@@ -151,7 +151,7 @@ class Collect implements Command {
     }
 
     public String toString() {
-        return "Received " + product.getQty() + " " + product.getName() + " (" + product.getProductID() + ")";
+        return "Received " + qty + " " + product.getName() + " (" + product.getProductID() + ")";
     }
 
 }
@@ -162,6 +162,8 @@ class Ship implements Command {
     Vector<CoffeeProduct> record;
     Caretaker caretaker;
     CoffeeProduct product;
+    int qty;
+    boolean success;
 
     public Ship(Scanner sc, Vector record, Caretaker caretaker) {
         this.sc = sc;
@@ -176,19 +178,23 @@ class Ship implements Command {
 
         for (int i = 0; i < record.size(); i++) {
             if (Integer.parseInt(code) == record.get(i).getProductID()) {
-                product = record.get(i);
+                qty = sc.nextInt();
                 System.out.println("Quantity to ship:");
-                int qty = sc.nextInt();
                 if (record.get(i).getQty() - qty > 0) {
+                    product = record.get(i);
                     caretaker.saveMyClass(record.get(i));
                     record.get(i).setQty(record.get(i).getQty() - qty);
+                    
                     if (record.get(i) instanceof CoffeeCandy) {
                         System.out.println("Shipped " + qty + " packs of " + record.get(i).getName() + ". Current quantity is " + record.get(i).getQty() + ".");
                     } else {
                         System.out.println("Shipped " + qty + " packs of " + record.get(i).getName() + ". Current quantity is " + record.get(i).getQty() + ".");
                     }
+                    
+                    success=true;
                 } else {
                     System.out.println("Invalid quantity (current balance is less than required quantity). Try again!!!");
+                    success=false;
                 }
             }
         }
@@ -205,7 +211,7 @@ class Ship implements Command {
     }
 
     public String toString() {
-        return "Shipped " + product.getQty() + " " + product.getName() + " (" + product.getProductID() + ")";
+        return "Shipped " + qty + " " + product.getName() + " (" + product.getProductID() + ")";
     }
 
 }

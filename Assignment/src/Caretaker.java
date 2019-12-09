@@ -14,7 +14,6 @@ public class Caretaker {
 
     public void undo() {
         if (!undoList.isEmpty()) {
-            System.out.println("Perform undo.");
             Memento m = (Memento) undoList.pop();
             Memento redomemento = new Memento(m.myClass);
             redoList.push(redomemento);
@@ -26,7 +25,6 @@ public class Caretaker {
 
     public void redo() {
         if (!redoList.isEmpty()) {
-            System.out.println("Perform redo.");
             Memento m = (Memento) redoList.pop();
             Memento undomemento = new Memento(m.myClass);
             undoList.push(undomemento);
